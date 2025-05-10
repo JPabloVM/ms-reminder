@@ -1,0 +1,13 @@
+FROM node:21.1.0-bookworm
+
+WORKDIR /ms-reminder
+
+RUN apt update -y
+
+# Copia todo o projeto para o contêiner
+COPY . .
+
+RUN set -e && yarn install --ignore-engines --network-timeout 600000
+
+# Inicia o servidor em modo de desenvolvimento
+CMD yarn dev

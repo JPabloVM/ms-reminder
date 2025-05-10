@@ -1,0 +1,36 @@
+name: 'ms-reminder'
+services:
+  ms-reminder:
+    build:
+      dockerfile: ./Dockerfile.dev
+    restart: always
+    ports:
+      - 5000:5000
+    networks:
+      - ms-reminder-network
+    env_file:
+      - .dev.env
+    volumes:
+      - .:/ms-reminder
+    depends_on:
+      - mongodb
+
+  mongodb:
+    image: mongo:6
+    restart: always
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: devuser
+      MONGO_INITDB_ROOT_PASSWORD: devpass
+    volumes:
+      - mongodbdata:/data/db
+    networks:
+      - ms-reminder-network
+
+networks:
+  ms-reminder-network:
+    external: true
+
+volumes:
+  mongodbdata:
