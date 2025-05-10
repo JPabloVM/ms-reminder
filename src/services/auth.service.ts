@@ -18,7 +18,7 @@ export class AuthService {
         throw new UnauthorizedError('Invalid email or password');
       }
 
-      const privateKey = fs.readFileSync('private.key');
+      const privateKey = fs.readFileSync('private.key', 'utf-8');
       const token = jwt.sign({ data: user._id }, privateKey, { algorithm: 'RS256', expiresIn: '8h' });
 
       return { user, token };
