@@ -10,13 +10,22 @@ export const createReminderSchema = Joi.object({
   channel: Joi.string()
     .valid(...Object.values(EChannel))
     .required(),
+  email: Joi.string().email().when('channel', {
+    is: EChannel.EMAIL,
+    then: Joi.required(),
+    otherwise: Joi.optional(),
+  }),
+  phoneNumber: Joi.number().when('channel', {
+    is: EChannel.WHATSAPP,
+    then: Joi.required(),
+    otherwise: Joi.optional(),
+  }),
   date: Joi.string()
     .pattern(/^\d{4}-\d{2}-\d{2}$/)
     .required()
     .messages({
       'string.pattern.base': '"date" must be in the format YYYY-MM-DD',
     }),
-
   time: Joi.string()
     .pattern(/^\d{2}:\d{2}$/)
     .required()
