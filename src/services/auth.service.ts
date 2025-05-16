@@ -8,7 +8,7 @@ import UserModel from '../models/user.model';
 export class AuthService {
   async login(email: string, password: string) {
     try {
-      const user = await UserModel.findOne({ email: email });
+      const user = await UserModel.findOne({ email: email, status: true });
       if (!user) {
         throw new UnauthorizedError('Invalid email or password');
       }

@@ -23,3 +23,23 @@ export function authenticate(req: Request, res: Response, next: NextFunction) {
     next(new UnauthorizedError('Access unauthorized'));
   }
 }
+
+export function authenticateInternal(req: Request, res: Response, next: NextFunction) {
+  try {
+    const authorization = req.headers.authorization;
+    if (!authorization) {
+      throw new UnauthorizedError('Access unauthorized');
+    }
+
+    const token = authorization.replace('Bearer ', '');
+
+    if (token !== process.env.PRIVATE_KEY) {
+      throw new UnauthorizedError();
+    }
+
+    next();
+  } catch (error) {
+    console.error(error);
+    next(new UnauthorizedError('Access unauthorized'));
+  }
+}
