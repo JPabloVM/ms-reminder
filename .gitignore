@@ -137,5 +137,6 @@ dist
 generated/prisma/
 
 .vscode
-
-
+# KEYS
+private.key
+public.key
